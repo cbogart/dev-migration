@@ -1,0 +1,8 @@
+.mode csv
+.import dependencies-1.2.0-2018-03-12.csv dependencies
+.import repositories-1.2.0-2018-03-12.csv repositories
+.import versions-1.2.0-2018-03-12.csv versions
+.import projects-1.2.0-2018-03-12.csv projects
+.import repository_dependencies-1.2.0-2018-03-12.csv repository_dependencies
+.import projects_with_repository_fields-1.2.0-2018-03-12.csv projects_with_repository_fields
+.import tags-1.2.0-2018-03-12.csv tags
