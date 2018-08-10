@@ -1,5 +1,7 @@
 import os
+import json
 import sys
+import gzip
 import csv
 csv.field_size_limit(sys.maxsize)
 from unicodeManager import UnicodeReader, UnicodeWriter
@@ -33,9 +35,9 @@ unmask = {}
 
 dataPath = "/data/play/cbogart/"
 
-w_log = UnicodeWriter(open(os.path.join(dataPath, 'idm', 'idm_log.csv'), 'wb'))
-writer = UnicodeWriter(open(os.path.join(dataPath, 'idm', 'idm_map.csv'), 'wb'))
-w_maybe = UnicodeWriter(open(os.path.join(dataPath, 'idm', 'idm_maybe.csv'), 'wb'))
+w_log = UnicodeWriter(open(os.path.join(dataPath, 'openstack2', 'idm_log.csv'), 'wb'))
+writer = UnicodeWriter(open(os.path.join(dataPath, 'openstack2', 'idm_map.csv'), 'wb'))
+w_maybe = UnicodeWriter(open(os.path.join(dataPath, 'openstack2', 'idm_maybe.csv'), 'wb'))
 
 idx = 0
 step = 100000
@@ -46,7 +48,7 @@ aliases = {}
 #    reader = UnicodeReader(open(os.path.join(dataPath, 'users_clean_emails_sample.csv'), 'rU'))
 #reader = UnicodeReader(open(os.path.join(dataPath, 'clean', 'users_clean_emails.csv'), 'rb'))
 #reader = csv.reader(open(os.path.join(dataPath, 'clean', 'users_clean_emails.csv'), 'rU'))
-reader = csv.reader(open(os.path.join(dataPath, 'clean', 'authors.csv'), 'rU'))
+reader = csv.reader(gzip.open("/data/update/openstack/openstack.a.gz", 'rU'))
 
 def safe(x):
     try:
@@ -89,9 +91,9 @@ for ix, row in enumerate(reader):
     email = r[len(name):].strip().replace("<","").replace(">","")
     user_type = None
     location = None
-    login = None #email.split("@")[0].strip()
+    login = email.split("@")[0].strip()
     
-    unmask[uid] = uid
+    #unmask[uid] = uid
 
     m = fakeusr_rex.search(login)
     if m is not None:
@@ -336,6 +338,8 @@ for uid, member_uids in clusters.iteritems():
     elif len(real)==0 and \
             (cl.get(COMP_EMAIL_PREFIX,0) >= (len(members)-1) or cl.get(FULL_NAME,0) >= (len(members)-1)):
         is_valid = True
+    elif cl.get(FULL_NAME,0) >= 1:
+        is_valid = True 
     else:
         # Split by email address if at least 2 share one
         if cl.get(EMAIL,0):
@@ -361,7 +365,7 @@ for uid, member_uids in clusters.iteritems():
                     if a.uid != rep.uid:
                         w_log.writerow([a.uid, a.login, a.name, a.email, a.location])
                         writer.writerow([a.uid, rep.uid])
-                        unmask[a.uid] = rep.uid
+                        #unmask[a.uid] = rep.uid
         
         
         w_maybe.writerow([])
@@ -396,9 +400,9 @@ for uid, member_uids in clusters.iteritems():
                 writer.writerow([a.uid, rep.uid])
                 unmask[a.full] = rep.full
 
+with open(dataPath + "/openstack2/aliasmap_bogdanv.json", "w") as f:
+    f.write(json.dumps(unmask, indent=4))
 
-import pickle
-pickle.dump(unmask,         open(os.path.join(dataPath, 'dict', 'aliasMap.dict'), 'wb'))
 
 
 

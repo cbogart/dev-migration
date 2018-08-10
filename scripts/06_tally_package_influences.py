@@ -70,8 +70,13 @@ for row in cmts:
     except Exception, e:
         print "can't use row", row
 
-import dill
+print "Writing infl.dill"
 dill.dump(infl,open(localfiles + "infl.dill","w"))
+print "Writing cmtcountp.dill"
+dill.dump(cmtcountp,open(localfiles + "cmtcount_pkgs.dill","w"))
+print "Writing cmtcount.dill"
+dill.dump(cmtcount,open(localfiles + "cmtcount.dill","w"))
+print "done Writing cmtcount.dill"
 
 for eco in ecos:
     grph = csv.writer(gzip.open(localfiles + "graph_aud_pkgs_" + eco + ".csv.gz","w"))
@@ -80,8 +85,13 @@ for eco in ecos:
       for y in scale[eco][pkg].keys():
         for f in ecos:
             try:
-                if infl[f][eco][pkg][y] > 0:
-                    grph.writerow([y,pkg,f,1.0*infl[f][eco][pkg][y]/scale[eco][pkg][y]/cmtcountp[eco][pkg][y],infl[f][eco][pkg][y],scale[eco][pkg][y],cmtcountp[eco][pkg][y],cmtcount[eco][y],curr[eco][pkg][y],len(devs[eco][pkg][y])])
+                grph.writerow([y,pkg,f,1.0*infl[f][eco][pkg][y]/scale[eco][pkg][y]/cmtcountp[eco][pkg][y],infl[f][eco][pkg][y],scale[eco][pkg][y],cmtcountp[eco][pkg][y],cmtcount[eco][y],curr[eco][pkg][y],len(devs[eco][pkg][y])])
             except Exception, e:
                 print y,f,e
 
+authlevel = csv.writer(gzip.open(localfiles + "authtotals.csv.gz"))
+authlevel.writerow(["author","year","ecosystem","commits"])
+for author in logg:
+    for ecosystem in logg[author]:
+        for year in logg[author][ecosystem]:
+            authlevel.writerow([author,year,ecosystem,logg[author][ecosystem][year]])
