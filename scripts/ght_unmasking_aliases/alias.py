@@ -58,9 +58,9 @@ class Alias:
         self.email_prefix = prefix
         self.email_domain = domain
         
-        location = location.strip()
-        if location == 'N' or not len(location):
-            location = None
+        #location = location.strip()
+        #if location == 'N' or not len(location):
+        #    location = None
         self.location = location
         
         self.gender = gender
