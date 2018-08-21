@@ -1,0 +1,22 @@
+MCN_LIBS=erebor.lti.cs.cmu.edu
+MCN_LIBS_WORKING=/usr2/scratch/dev-migration
+MCN_LIBS_USER=cbogart
+MCN_OSC=da4.eecs.utk.edu
+MCN_OSC_PORT = 443
+MCN_OSC_WORKING=/data/play/cbogart/working
+MCN_OSC_USER=cbogart
+
+# install me in LIBS/WORKING
+# install me in OSC/WORKING
+# download libraries to libs
+# unzip libraries
+# extract repos to libs/data/common
+# run bioc scrape to libs/data/common
+# run eclipse scrape to libs/data/common
+# run lua scrape to libs/data/common
+# run stackage scrape to libs/data/common
+#scp -l $MCN_OSC_USER $MCN_LIBS:$MCN_LIBS_WORKING/data/common/\* data/common
+#   <--- put fake repo list here for testing
+
+
+
