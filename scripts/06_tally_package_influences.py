@@ -80,7 +80,7 @@ print "done Writing cmtcount.dill"
 
 for eco in ecos:
     grph = csv.writer(gzip.open(localfiles + "graph_aud_pkgs_" + eco + ".csv.gz","w"))
-    grph.writerow(["year","package","influence","proportion","raw_influence","raw_scale","commit_count_package","commit_count_eco","current_ecosystem_use"])
+    grph.writerow(["year","repo","influence","proportion","raw_influence","raw_scale","commit_count_repo","commit_count_eco","current_ecosystem_use"])
     for pkg in scale[eco].keys():
       for y in scale[eco][pkg].keys():
         for f in ecos:
